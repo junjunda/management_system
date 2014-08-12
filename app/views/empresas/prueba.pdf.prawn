@@ -1,0 +1,1 @@
+raise "prueba".to_yaml

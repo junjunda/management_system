@@ -1,0 +1,57 @@
+%section.contexto
+    %label.contexto Empresas > Empresas Retiradas > Eliminar Empresas
+    %hr.contexto{:size => "1"}
+%section#areaTrabajo.areaTrabajo
+    %p#notice= notice
+    =render 'botones_exportar_empresas_retiradas'
+    =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_eliminar_empresa" do
+        %table.margen_inferior{:border => 1}
+            %tr
+                %td
+                    Eliminar Masivamente
+                %td
+                    Sub-Estatus
+                %td
+                    Motivo Retiro
+            %tr
+                %td
+                    =check_box_tag "eliminar_masivo"
+                %td
+                    =select_tag("sub_estatus", options_from_collection_for_select(SubEstatus.all, "id", "descripcion"))
+                %td
+                    =select_tag("motivo_retiro", options_from_collection_for_select(MotivoRetiro.all, "id", "descripcion"))
+       
+        %table#data_table_empresas_eliminar.display{:"data-source" => "/empresas.json?eliminar=true"}
+            %thead
+                %tr
+                    %th Selección
+                    %th Prefijo
+                    %th Nombre Empresa
+                    %th Fecha Inscripción
+                    %th Ciudad
+                    %th RIF
+                    %th Fecha Retiro
+                    %th Empresa Detalle
+                    %th Productos
+                    %th Servicios
+                    %th GLN
+                    %th Sub-estatus
+                    %th Motivo Retiro
+                    
+            %tbody
+            %tfoot
+                =render 'footer_eliminar'
+        %br/
+        %br/
+        #datos_empresas_eliminar
+        
+        =hidden_field_tag "eliminar", "true"
+        %button#submit.ui-state-default.ui-corner-all.eliminar{:type => "submit", :title =>"Elimina las empresas seleccionadas"}
+            %span.ui-icon.ui-icon-circle-minus
+            Eliminar
+        %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas", :title => "Regresar al listado general de empresas"}
+            %span.ui-icon.ui-icon-arrowreturnthick-1-w
+            Regresar
+        
+        
+    

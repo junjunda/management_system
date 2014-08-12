@@ -1,0 +1,7 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  secuencia_prefijo: 1
+
+two:
+  secuencia_prefijo: 1

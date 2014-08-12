@@ -1,0 +1,95 @@
+%section.contexto
+  %label.contexto=@gln.gln_empresa.empresa.nombre_empresa + " > GLN #{@gln.gln} > Detalle"
+  %hr.contexto{:size => "1"}
+
+%section#areaTrabajo.areaTrabajo{:style => "font: 100% 'Trebuchet MS', sans-serif"}
+  %table
+    %tr
+      %td
+        Empresa
+      %td
+        =@gln.gln_empresa.empresa.nombre_empresa
+    %tr
+      %td
+        GLN
+      %td
+        = @gln.gln
+    %tr
+      %td
+        Tipo GLN
+      %td
+        = @gln.tipo_gln.nombre
+    %tr
+      %td
+        Código Localización
+      %td
+        = @gln.codigo_localizacion
+    %tr
+      %td
+        Descripción
+      %td
+        = @gln.descripcion
+    %tr
+      %td
+        Estatus
+      %td
+        = @gln.estatus.descripcion
+    %tr
+      %td
+        Fecha Asignación
+      %td
+        = @gln.fecha_asignacion.strftime("%Y-%m-%d")
+    %tr
+      %td
+        País
+      %td
+        =@gln.try(:pais).try(:nombre)
+    %tr
+      %td
+        Estado
+      %td
+        =@gln.estado.nombre
+    %tr
+      %td
+        Municipio
+      %td
+        /= @gln.try(:municipio).try(:nombre) 
+    %tr
+      %td
+        Ciudad
+      %td
+        = @gln.try(:ciudad).try(:nombre)
+    %tr
+      %td
+        Edificio
+      %td
+        =@gln.edificio
+    %tr
+      %td
+        Calle
+      %td
+        = @gln.calle
+    %tr
+      %td
+        Urbanización
+      %td
+        = @gln.urbanizacion
+    %tr
+      %td
+        Punto Referencia
+      %td
+        =@gln.punto_referencia
+    %tr
+      %td
+        Código Postal
+      %td
+        =@gln.cod_postal
+  %br
+  %br
+  %a.ui-state-default.ui-corner-all.regresar_empresas_sin_espacio{:href => "/empresas/#{params[:empresa_id]}/glns", :title => "Regresar al listado de GLN"}
+    %span.ui-icon.ui-icon-arrowreturnthick-1-w
+    Regresar
+
+  
+  
+ 

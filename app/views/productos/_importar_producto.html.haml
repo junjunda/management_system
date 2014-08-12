@@ -1,0 +1,16 @@
+.importar_producto
+    =form_tag "#{empresa_productos_path}/import" , multipart: true, :id=> "importar_archivo" do
+        %table
+            %tr
+                %td
+                    =file_field_tag :file, :id => "archivo_excel"
+        %table
+            %tr
+                %td
+                    Tipo GTIN
+                %td
+                    =select_tag "tipo_gtin", options_from_collection_for_select(TipoGtin.find(:all, :conditions => ["id in (?)", [3,4,6]]), "id", "tipo_gtin_base"), prompt: "- Seleccione -"
+            %tr
+                %td
+                    =submit_tag "Importar", :id => "importar_archivo"
+                %td

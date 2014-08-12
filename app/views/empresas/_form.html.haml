@@ -1,0 +1,253 @@
+%section.contexto
+  %label.contexto.titulo_contrato
+    Registrar Empresa
+  
+  %br
+  %br
+  
+  %section.formulario
+    = form_for(@empresa, :html => {:id => "formulario_crear_empresa"}) do |f|
+
+      -if @empresa.errors.any? 
+        #error_explanation
+          %h2= pluralize(@empresa.errors.count, "errore")
+          %ul
+            // Customización de los mensajes de error para el formulario empresa
+            -@empresa.errors.full_messages.each do |msg|
+              -if msg == 'Id estado no puede estar en blanco'
+                %li='Debe selecionar una opción para el Estado.'
+              -elsif msg == 'Id ciudad no puede estar en blanco'
+                %li='Debe selecionar una opción para la Ciudad.'
+              -elsif msg == 'Id clasificación no puede estar en blanco'
+                %li='Debe seleccionar una clasificación.'
+              -elsif msg == 'Datos contacto contacto no puede estar en blanco'
+                %li='El campo Contacto no puede estar en blanco.'
+              -elsif msg == 'Datos contacto nombre contacto no puede estar en blanco'
+                %li='El campo Nombre Contacto no puede estar en blanco.'
+              -elsif msg == 'Datos contacto cargo contacto no puede estar en blanco'
+                %li='El campo Cargo Contacto no puede estar en blanco.'
+              -else
+                %li=msg + '.'
+              
+      
+      %table
+        %tr
+          %td
+            Prefijo Asignado
+          %td
+            -if @empresa.new_record?
+              =f.text_field :prefijo , :value => "#{@ultimo}", :readonly => :true, :class => 'campo_readonly'
+            -else
+              =f.text_field :prefijo, :readonly => :true, :class => 'campo_readonly'
+      %table
+        %tr
+          %td
+            Afiliación en Tipo
+          %td
+            
+            =f.collection_select :id_tipo_usuario, @empresa.new_record? ? TipoUsuarioEmpresa.find(:all, :conditions => ["descripcion in (?)", ['Usuario', 'No Usuario']]) : TipoUsuarioEmpresa.all, :id_tipo_usu_empresa, :descripcion, :prompt => "-Seleccione-"
+      %br
+      %br
+
+      %table
+        %tr
+          %td
+            Nombre de la Empresa
+          %td
+            =f.text_field :nombre_empresa
+        %tr
+          %td
+            Dirección Fiscal
+          %td         
+            =f.text_field :direccion_empresa, {:size => "80"}
+
+          -if @empresa.new_record?
+            =f.fields_for :datos_contacto do |fc|
+            
+              %tr
+                %td
+                  Teléfono 1 (58)
+                %td
+                  =fc.text_field :contacto, :placeholder => "(0212) 123-45-67"
+                %td
+                  =fc.hidden_field(:tipo, :value => 'telefono') 
+              %tr
+                %td
+                  Teléfono 2 (58)
+                %td
+                  =text_field_tag "telefono2",'',  {:placeholder => "(0212) 123-45-67"}
+              %tr
+                %td
+                  Teléfono 3 (58)
+                %td
+                  =text_field_tag "telefono3",'',  {:placeholder => "(0212) 123-45-67"}
+              %tr
+                %td
+                  FAX (58)
+                %td
+                  =text_field_tag "fax",'',  {:placeholder => "(0212) 123-45-67"}
+              %tr
+                %td
+                  Email
+                %td
+                  =text_field_tag "email",'',  {:placeholder => "correo@prueba.com"}
+          %tr
+            %td
+              RIF
+            %td
+              = f.text_field :rif, :placeholder => "J-12548785-4"    
+          %tr
+            %td
+              Nombre del RESPONSABLE LEGAL
+            %td
+              =f.text_field :rep_legal
+          %tr
+            %td
+              Cargo 
+            %td
+              =f.text_field :cargo_rep_legal
+          %tr
+            %td
+              Fecha de inscripción en Registro Mercantil
+            %td
+              = @empresa.new_record? ? f.text_field(:fecha_inscripcion) : f.text_field(:fecha_inscripcion, :readonly => :true, :value => "#{@empresa.fecha_inscripcion.strftime("%Y-%m-%d")}", :class => 'campo_readonly')
+          
+          %tr
+            %td
+              Estado
+            %td
+              = f.collection_select :id_estado, Estado.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Estado-'}
+          %tr
+            %td
+              Ciudad
+            %td
+              = f.collection_select :id_ciudad, Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Ciudad-'}
+      -if !@empresa.new_record?
+        =render 'datos_contacto'    
+        
+      %br/
+      %label.contexto
+        Dirección para envío de correspondencia de codificación de GS1
+      %hr.contexto{:size => "1"}  
+        =f.fields_for :correspondencia do |fa|
+          %table
+            %tr
+              %td
+                NOMBRE PERSONA CONTACTO
+              %td
+                = fa.text_field :rep_tecnico
+            %tr
+              %td
+                CARGO
+              %td
+                = fa.text_field :cargo_rep_tecnico
+            %tr
+              %td
+                Galpón / Edificio / Quinta
+              %td
+                = fa.text_field :edificio, :placeholder => "Piso / Nº - Ofic. / Apto"
+            %tr
+              %td
+                Av / Calle
+              %td
+                = fa.text_field :calle
+            %tr
+              %td
+                Urbanización / Barrio / Sector / Terraza
+              %td
+                = fa.text_field :urbanizacion
+            %tr
+              %td
+                Estado
+              %td
+                =fa.collection_select :id_estado, Estado.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Estado-'}
+            %tr
+              %td
+                Ciudad
+              %td
+                =fa.collection_select :id_ciudad,  Ciudad.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Ciudad-'}
+            %tr
+              %td
+                Municipio
+              %td
+                =fa.collection_select :id_municipio,  Municipio.find(:all, :order => "nombre ASC"), :id, :nombre, {:prompt => '-Seleccione Municipio-'}
+            %tr
+              %td
+                Parroquia
+              %td
+                /=fa.text_field :id_parroquia
+                =fa.text_field :nombre_parroquia
+            %tr
+              %td
+                Código Postal
+              %td
+                =fa.text_field :cod_postal
+            %tr
+              %td
+                Punto de Referencia
+              %td
+                =fa.text_field :punto_referencia 
+      
+      %br/
+
+      %label.contexto
+        =@empresa.new_record? ? "Ramo de desempeño de la empresa" : @empresa.nombre_empresa + " > Ramo de desempeño de la empresa"
+      %hr.contexto{:size => "1"}
+
+      %table
+        %tr
+          / %td
+          /   Nombre Comercial
+          / %td
+          /   = f.text_field :nombre_comercial
+        %tr
+          %td
+            Clasificación
+          %td
+            -if @empresa.new_record?
+              =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:600px;"})
+            -else
+              =f.collection_select(:id_clasificacion, Clasificacion.find(:all), :id, :clasificacion, {:prompt => "-Seleccione Clasificación"}, { :style => "width:600px;"})
+           
+            
+        %tr
+          %td
+            Categoría 
+          %td
+            = f.text_field :categoria, :readonly => :true, :class => 'campo_readonly'
+        %tr
+          %td
+            División
+          %td
+            = f.text_field :division , :readonly => :true, :class => 'campo_readonly'
+        %tr
+          %td
+            Grupo
+          %td
+            = f.text_field :grupo , :readonly => :true, :class => 'campo_readonly'
+        %tr
+          %td
+            Clase
+          %td
+            = f.text_field :clase, :readonly => :true, :class => 'campo_readonly'
+
+      
+      %button#submit.ui-state-default.ui-corner-all.crear_empresa{:type => "submit"}
+        %span.ui-icon.ui-icon-circle-plus
+        Guardar
+
+      %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas", :title => "Regresar al listado general de empresas"}
+        %span.ui-icon.ui-icon-arrowreturnthick-1-w
+        Regresar
+
+      
+
+
+
+
+
+
+    
+
+        
+

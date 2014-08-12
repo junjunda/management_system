@@ -1,0 +1,48 @@
+%section.contexto
+  %label.contexto Usuarios > Detalle
+  %hr.contexto{:size => "1"}
+%section#areaTrabajo.areaTrabajo{:style => "font: 100% 'Trebuchet MS', sans-serif"}
+  %p#notice= notice
+  %table
+    %tr
+      %td
+        Usuario
+      %td
+        = @usuario.username
+    %tr
+      %td
+        Nombre 
+      %td
+        = @usuario.nombre_apellido
+    %tr
+      %td
+        Correo
+      %td
+        = @usuario.email
+    %tr
+      %td
+        Perfil
+      %td
+        = @usuario.perfil.descripcion
+    %tr
+      %td
+        Gerencia
+      %td
+        = @usuario.gerencia.nombre
+    %tr
+      %td
+        Cargo
+      %td
+        = @usuario.cargo.descripcion
+    %tr
+      %td
+        Fecha Creación
+      %td
+        = @usuario.fecha_creacion.strftime("%Y-%m-%d")
+  %br
+  %br
+
+  - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Usuario')
+    /=link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Detalle').html_safe, empresa_path(empresa),  {:class => "ui-state-default ui-corner-all botones_servicio", :title => "Detalle de la empresa #{empresa.nombre_empresa}"}),        
+    = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Editar').html_safe,  edit_usuario_path(@usuario), :class => "editar_usuario ui-state-default ui-corner-all" )
+  = link_to(( content_tag(:span, '',:class => 'ui-icon ui-icon-extlink')+'Regresar').html_safe,  usuarios_path, :class => "editar_usuario ui-state-default ui-corner-all")

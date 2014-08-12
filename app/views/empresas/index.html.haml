@@ -1,0 +1,32 @@
+%section.contexto
+    %label.contexto Empresas Activas > Listado
+    %hr.contexto{:size => "1"}
+%section#areaTrabajo.areaTrabajo
+    %p#notice= notice
+    
+    =render 'botones_exportar'
+
+    %table#data_table_empresas.display{:"data-source" => "/empresas.json"}
+        %thead
+            %tr
+                %th Prefijo
+                %th Nombre Empresa
+                %th Fecha Inscripción
+                %th Estado
+                %th Ciudad
+                %th RIF
+                %th Estatus
+                %th Detalle Empresa
+                - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Modificar Empresa')
+                    %th Editar Empresa 
+                %th Productos
+                %th Servicios
+                %th GLN
+                %th Etiquetas
+               
+        %tbody
+        %tfoot
+            =render 'footer'
+    
+    .loader_prueba
+        =image_tag "loader.gif", :class => "loader" 

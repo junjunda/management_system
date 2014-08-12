@@ -1,0 +1,51 @@
+%section.contexto
+    %label.contexto Empresas Activas > Retirar Empresas
+    %hr.contexto{:size => "1"}
+%p#notice.ui-state-highlight.ui-corner-all
+    -if (notice)
+        =notice
+        -notice = nil
+%section#areaTrabajo.areaTrabajo
+    
+    =render 'botones_retirar_empresa'
+
+    =form_tag update_multiple_empresas_path, :method => "put", :id => "formulario_retirar_empresa" do
+        
+        = render 'retiro_masivo'
+       
+        %table#data_table_empresas_retirar.display{:"data-source" => "/empresas.json?retirar=true"}
+            %thead
+                %tr
+                    %th Selección
+                    %th Prefijo
+                    %th Nombre Empresa
+                    %th Fecha Inscripción
+                    %th Ciudad
+                    %th RIF
+                    %th Estatus
+                    %th Detalle Empresa
+                    %th Productos
+                    %th Servicios
+                    %th GLN
+                    %th Sub-estatus
+                    %th Motivo Ret
+
+                    
+                    
+            %tbody
+            %tfoot
+                =render 'footer_retirar'
+        %br/
+        %br/
+        #datos_empresas_retirar
+        
+        =hidden_field_tag "retiro", "true"
+        - if UsuariosAlcance.verificar_alcance(session[:perfil], 'Retirar Empresa')
+            %button#submit.ui-state-default.ui-corner-all.retirar{:type => "submit", :id => "retirar_empresa"}
+                %span.ui-icon.ui-icon-circle-minus
+                Retirar
+        %a.ui-state-default.ui-corner-all.nuevo_contacto{:href => "/empresas", :title => "Regresar al listado general de empresas"}
+            %span.ui-icon.ui-icon-arrowreturnthick-1-w
+            Regresar
+        
+    
